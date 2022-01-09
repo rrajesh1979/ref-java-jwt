@@ -1,4 +1,4 @@
-package org.rrajesh1979.demo;
+package org.rrajesh1979.tool;
 
 import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine;

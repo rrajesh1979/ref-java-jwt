@@ -46,7 +46,7 @@
 
     <properties>
         <!-- Build -->
-        <mainClass>org.rrajesh1979.demo.JWTC</mainClass>
+        <mainClass>org.rrajesh1979.tool.JWTC</mainClass>
         <executable-suffix/>
         <appName>jwtc</appName>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -139,6 +139,26 @@
             <version>0.11.2</version>
             <scope>runtime</scope>
         </dependency>
+
+        <!-- https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-core -->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-core</artifactId>
+            <version>2.13.1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.json</groupId>
+            <artifactId>json</artifactId>
+            <version>20211205</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.javatuples</groupId>
+            <artifactId>javatuples</artifactId>
+            <version>1.2</version>
+        </dependency>
+
     </dependencies>
 
     <build>
