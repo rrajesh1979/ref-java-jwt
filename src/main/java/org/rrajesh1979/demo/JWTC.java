@@ -1,25 +1,41 @@
 package org.rrajesh1979.demo;
 
-import java.security.Key;
+import lombok.extern.slf4j.Slf4j;
+import picocli.CommandLine;
+import picocli.CommandLine.Command;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
+/**
+ * @author rrajesh1979
+ * @version 0.0.1
+ * @since 2021-Jan-08
+ */
 
-public class JWTC {
+@Command(name = "jwtc", mixinStandardHelpOptions = true, version = "jwtc 0.0.1", description = "Encode and decode JWT tokens.", subcommands = {
+        JWTCEncode.class, JWTCDecode.class
+})
+@Slf4j
+public class JWTC implements Runnable {
+    /**
+     * Main function to invoke the picocli framework.
+     *
+     * @param args the command line arguments.
+     *             The first argument is the file whose checksum to calculate.
+     *             The second argument is the algorithm to use.
+     *             The default algorithm is MD5.
+     */
     public static void main(String[] args) {
-        System.out.println("Hello World!");
-
-        // We need a signing key, so we'll create one just for this example. Usually
-        // the key would be read from your application configuration instead.
-        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
-
-        String jws =
-                Jwts.builder()
-                        .setSubject("Joe")
-                        .signWith(key)
-                        .compact();
-
-        System.out.println(jws);
+        int exitCode;
+        log.info("Hello from JWTC main");
+        CommandLine.run(new JWTC(), args);
     }
+
+    /**
+     * Function invoked by picocli to calculate the checksum of a file.
+     *
+     */
+    @Override
+    public void run() {
+        log.info("Hello from JWTC call");
+    }
+
 }
