@@ -16,8 +16,8 @@
 
 package org.rrajesh1979.utils;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 import org.javatuples.Pair;
@@ -48,28 +48,62 @@ public class JWTUtil {
         if (aud != null) {
             payload.put("aud", aud);
         }
-        payload.put("iat", Objects.requireNonNullElse(iat, System.nanoTime()));
+        if (iat != 0) {
+            payload.put("iat", iat);
+        } else {
+            payload.put("iat", System.nanoTime());
+        }
         payload.put("exp", Objects.requireNonNullElse(System.nanoTime() + exp, System.nanoTime() + 1000000000));
 
 
-        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
+        Key key = signingKey(alg);
 
-        String jws = Jwts.builder()
+        JwtBuilder jwtBuilder = Jwts.builder()
                 .setHeader(header)
                 .setPayload(payload.toString())
                 .signWith(key)
-                .compact();
+                ;
+
+        String jws = jwtBuilder.compact();
 
         return new Pair<>(jws, Encoders.BASE64.encode(key.getEncoded()));
+    }
+
+    private static Key signingKey(String algorithm) {
+        return switch (algorithm) {
+            case "HS256" -> Keys.secretKeyFor(SignatureAlgorithm.HS256);
+            case "HS384" -> Keys.secretKeyFor(SignatureAlgorithm.HS384);
+            case "HS512" -> Keys.secretKeyFor(SignatureAlgorithm.HS512);
+            case "RS256" -> Keys.secretKeyFor(SignatureAlgorithm.RS256);
+            case "RS384" -> Keys.secretKeyFor(SignatureAlgorithm.RS384);
+            case "RS512" -> Keys.secretKeyFor(SignatureAlgorithm.RS512);
+            case "ES256" -> Keys.secretKeyFor(SignatureAlgorithm.ES256);
+            case "ES384" -> Keys.secretKeyFor(SignatureAlgorithm.ES384);
+            case "ES512" -> Keys.secretKeyFor(SignatureAlgorithm.ES512);
+            case "PS256" -> Keys.secretKeyFor(SignatureAlgorithm.PS256);
+            case "PS384" -> Keys.secretKeyFor(SignatureAlgorithm.PS384);
+            case "PS512" -> Keys.secretKeyFor(SignatureAlgorithm.PS512);
+            default -> throw new IllegalArgumentException("Unsupported algorithm: " + algorithm);
+        };
+    }
+
+    public static void decodeJWT(String jws, String key) {
+        Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jws);
+        System.out.println("Header: " + claims.getHeader());
+        System.out.println("Payload: " + claims.getBody());
+        System.out.println("Signature: " + claims.getSignature());
     }
 
     public static void main(String[] args) {
         String userInput = "{\"name\": \"Joe\", \"picture\": \"https://example.com/image.png\"}";
 
-        Pair<String, String> jwtAndKey = createJWT("JWT", "HS256", userInput, null, null, null, 0, 1000000000);
+        Pair<String, String> jwtAndKey = createJWT("JWT", "HS512", userInput,
+                "rrajesh1979", "JWT Encoder", "Hello JWT", 0, 1000000000);
 
         System.out.println("JWT :" + jwtAndKey.getValue0());
         System.out.println("Secret Key :" + jwtAndKey.getValue1());
+
+        decodeJWT(jwtAndKey.getValue0(), jwtAndKey.getValue1());
     }
 
 }
