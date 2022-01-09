@@ -1,4 +1,4 @@
-package org.rrajesh1979.demo;
+package org.rrajesh1979.tool;
 
 import java.security.Key;
 
@@ -19,11 +19,16 @@ public class JWTCEncode implements Runnable {
         Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
         String jws = Jwts.builder()
-                .setSubject("Joe")
+                // .setSubject("Joe")
+                .setPayload("{\"name\": \"Joe\", \"picture\": \"https://example.com/image.png\"}")
                 .signWith(key)
                 .compact();
 
         System.out.println(jws);
+
+        assert Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jws).getBody().getSubject().equals("Joe");
+
+        System.out.println(Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jws));
 
     }
 }
