@@ -26,9 +26,32 @@ import org.json.JSONObject;
 import java.security.Key;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class JWTUtil {
-    public static Pair<String, String> createJWT(Map<String, Object> header, JSONObject payload) {
+    public static Pair<String, String> createJWT(String typ, String alg, String userInput,
+                                                 String iss, String sub, String aud, long iat, long exp) {
+
+        /* Construct JWT Header */
+        Map<String, Object> header = new HashMap<>();
+        header.put("typ", Objects.requireNonNullElse(typ, "JWT"));
+        header.put("alg", Objects.requireNonNullElse(alg, "HS256"));
+
+        /* Construct JWT Payload */
+        JSONObject payload = new JSONObject(userInput);
+        if (iss != null) {
+            payload.put("iss", iss);
+        }
+        if (sub != null) {
+            payload.put("sub", sub);
+        }
+        if (aud != null) {
+            payload.put("aud", aud);
+        }
+        payload.put("iat", Objects.requireNonNullElse(iat, System.nanoTime()));
+        payload.put("exp", Objects.requireNonNullElse(System.nanoTime() + exp, System.nanoTime() + 1000000000));
+
+
         Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
         String jws = Jwts.builder()
@@ -43,22 +66,7 @@ public class JWTUtil {
     public static void main(String[] args) {
         String userInput = "{\"name\": \"Joe\", \"picture\": \"https://example.com/image.png\"}";
 
-        Map<String, Object> header = new HashMap<>();
-        header.put("typ", "JWT");
-        header.put("alg", "HS256");
-
-        Map<String, Object> payload = new HashMap<>();
-
-        JSONObject userInputJson = new JSONObject(userInput);
-
-        //Standard JWT claims
-        userInputJson.put("iss", "https://example.com");
-        userInputJson.put("sub", "1234567890");
-        userInputJson.put("aud", "https://example.com");
-        userInputJson.put("iat", System.nanoTime());
-        userInputJson.put("exp", System.nanoTime() + 1000000000);
-
-        Pair<String, String> jwtAndKey = createJWT(header, userInputJson);
+        Pair<String, String> jwtAndKey = createJWT("JWT", "HS256", userInput, null, null, null, 0, 1000000000);
 
         System.out.println("JWT :" + jwtAndKey.getValue0());
         System.out.println("Secret Key :" + jwtAndKey.getValue1());
