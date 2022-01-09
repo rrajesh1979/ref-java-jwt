@@ -34,7 +34,22 @@ class JWTUtilTest {
         String key = jwtAndKey.getValue1();
 
         Pair<String, String> decodedJwtAndKey = JWTUtil.decodeJWT(jwt, key);
-        assert(decodedJwtAndKey.getValue0().equals("{typ=JWT, alg=HS512}"));
-        assert(decodedJwtAndKey.getValue1().equals("{sub=JWT Encoder, aud=Hello JWT, name=Joe, iss=rrajesh1979, picture=https://example.com/image.png}"));
+        assert (decodedJwtAndKey.getValue0().equals("{typ=JWT, alg=HS512}"));
+        assert (decodedJwtAndKey.getValue1().equals("{sub=JWT Encoder, aud=Hello JWT, name=Joe, iss=rrajesh1979, picture=https://example.com/image.png}"));
+    }
+
+    @Test
+    void encodeDecodeJWTEmptyPayloadTest() {
+        String userInput = "{}";
+
+        Pair<String, String> jwtAndKey = JWTUtil.createJWT("JWT", "HS512", userInput,
+                "rrajesh1979", "JWT Encoder", "Hello JWT", false, 0);
+
+        String jwt = jwtAndKey.getValue0();
+        String key = jwtAndKey.getValue1();
+
+        Pair<String, String> decodedJwtAndKey = JWTUtil.decodeJWT(jwt, key);
+        assert (decodedJwtAndKey.getValue0().equals("{typ=JWT, alg=HS512}"));
+        assert (decodedJwtAndKey.getValue1().equals("{sub=JWT Encoder, aud=Hello JWT, iss=rrajesh1979}"));
     }
 }

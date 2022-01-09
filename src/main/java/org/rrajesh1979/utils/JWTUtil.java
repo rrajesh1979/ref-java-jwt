@@ -16,17 +16,18 @@
 
 package org.rrajesh1979.utils;
 
-import io.jsonwebtoken.*;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.io.Encoders;
-import io.jsonwebtoken.security.Keys;
-import org.javatuples.Pair;
-import org.json.JSONObject;
-
 import java.security.Key;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+
+import org.javatuples.Pair;
+import org.json.JSONObject;
+
+import io.jsonwebtoken.*;
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.io.Encoders;
+import io.jsonwebtoken.security.Keys;
 
 public class JWTUtil {
     public static Pair<String, String> createJWT(String typ, String alg, String userInput,
@@ -54,7 +55,8 @@ public class JWTUtil {
         }
 
         if (exp != 0) {
-            payload.put("exp", System.nanoTime() + exp);
+            // Converting milliseconds to nanoseconds
+            payload.put("exp", System.nanoTime() + exp * 1000 * 1000);
         }
 
         Key key = signingKey(alg);

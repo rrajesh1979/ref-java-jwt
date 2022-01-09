@@ -5,21 +5,45 @@ import org.rrajesh1979.utils.JWTUtil;
 
 import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine;
+import picocli.CommandLine.Option;
 
 @CommandLine.Command(name = "encode")
 @Slf4j
 public class JWTCEncode implements Runnable {
+    @Option(names = { "-a",
+            "--algorithm" }, description = "Algorithm to be used. Default is HS256. Supported algorithms are HS256, HS384, HS512, RS256, RS384, RS512, ES256, ES384, ES512", defaultValue = "HS256")
+    String alg;
+
+    @Option(names = { "-t", "--ttl" }, description = "Time to Live in Milliseconds.", defaultValue = "3600000")
+    long ttlMillis;
+
+    @Option(names = { "-s", "--subject" }, description = "Subject of the JWT.")
+    String sub;
+
+    @Option(names = { "-ty", "--typ" }, description = "Token Type. Default is JWT.", defaultValue = "JWT")
+    String typ;
+
+    @Option(names = { "-i", "--issuer" }, description = "Principal that issued the JWT.", defaultValue = "rrajesh1979")
+    String iss;
+
+    @Option(names = { "-aud", "--audience" }, description = "Recipients the JWT is intended for.")
+    String aud;
+
+    @Option(names = { "-iat", "--issuedAt" }, description = "Include issued at in JWT.", defaultValue = "false")
+    boolean iat;
+
+    @CommandLine.Option(names = { "-p", "--userInput" }, description = "User provided payload in JSON format.", defaultValue = "{}")
+    String userInput;
+
     @Override
     public void run() {
-        log.info("Hello from JWTCEncode");
+        log.info("Starting JWTCEncode");
 
-        String userInput = "{\"name\": \"Joe\", \"picture\": \"https://example.com/image.png\"}";
+        Pair<String, String> jwtAndKey = JWTUtil.createJWT(typ, alg, userInput,
+                iss, sub, aud, iat, ttlMillis);
 
-        Pair<String, String> jwtAndKey = JWTUtil.createJWT("JWT", "HS512", userInput,
-                "rrajesh1979", "JWT Encoder", "Hello JWT", false, 1000000000);
-
-        System.out.println("JWT :" + jwtAndKey.getValue0());
-        System.out.println("Secret Key :" + jwtAndKey.getValue1());
+        log.info("JWT: {}", jwtAndKey.getValue0());
+        log.info("Secret Key: {}", jwtAndKey.getValue1());
 
     }
 }
