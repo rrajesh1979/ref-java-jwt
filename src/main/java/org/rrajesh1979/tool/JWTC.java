@@ -1,8 +1,11 @@
 package org.rrajesh1979.tool;
 
+import java.util.concurrent.Callable;
+
 import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.HelpCommand;
 
 /**
  * @author rrajesh1979
@@ -11,10 +14,10 @@ import picocli.CommandLine.Command;
  */
 
 @Command(name = "jwtc", mixinStandardHelpOptions = true, version = "jwtc 0.0.1", description = "Encode and decode JWT tokens.", subcommands = {
-        JWTCEncode.class, JWTCDecode.class
+        HelpCommand.class, JWTCEncode.class, JWTCDecode.class
 })
 @Slf4j
-public class JWTC implements Runnable {
+public class JWTC implements Callable<Integer> {
     /**
      * Main function to invoke the picocli framework.
      *
@@ -24,18 +27,19 @@ public class JWTC implements Runnable {
      *             The default algorithm is MD5.
      */
     public static void main(String[] args) {
-        int exitCode;
         log.info("Hello from JWTC main");
-        CommandLine.run(new JWTC(), args);
+        int exitCode = new CommandLine(new JWTC()).execute(args);
+        System.exit(exitCode);
     }
 
     /**
-     * Function invoked by picocli to calculate the checksum of a file.
+     * Function invoked by picocli to compute JWT.
      *
      */
     @Override
-    public void run() {
+    public Integer call() {
         log.info("Hello from JWTC call");
+        return 0;
     }
 
 }

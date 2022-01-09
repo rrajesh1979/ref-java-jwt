@@ -30,7 +30,7 @@ import java.util.Objects;
 
 public class JWTUtil {
     public static Pair<String, String> createJWT(String typ, String alg, String userInput,
-                                                 String iss, String sub, String aud, long iat, long exp) {
+                                                 String iss, String sub, String aud, boolean iat, long exp) {
 
         /* Construct JWT Header */
         Map<String, Object> header = new HashMap<>();
@@ -48,21 +48,21 @@ public class JWTUtil {
         if (aud != null) {
             payload.put("aud", aud);
         }
-        if (iat != 0) {
-            payload.put("iat", iat);
-        } else {
+
+        if (iat) {
             payload.put("iat", System.nanoTime());
         }
-        payload.put("exp", Objects.requireNonNullElse(System.nanoTime() + exp, System.nanoTime() + 1000000000));
 
+        if (exp != 0) {
+            payload.put("exp", System.nanoTime() + exp);
+        }
 
         Key key = signingKey(alg);
 
         JwtBuilder jwtBuilder = Jwts.builder()
                 .setHeader(header)
                 .setPayload(payload.toString())
-                .signWith(key)
-                ;
+                .signWith(key);
 
         String jws = jwtBuilder.compact();
 
@@ -70,40 +70,55 @@ public class JWTUtil {
     }
 
     private static Key signingKey(String algorithm) {
-        return switch (algorithm) {
-            case "HS256" -> Keys.secretKeyFor(SignatureAlgorithm.HS256);
-            case "HS384" -> Keys.secretKeyFor(SignatureAlgorithm.HS384);
-            case "HS512" -> Keys.secretKeyFor(SignatureAlgorithm.HS512);
-            case "RS256" -> Keys.secretKeyFor(SignatureAlgorithm.RS256);
-            case "RS384" -> Keys.secretKeyFor(SignatureAlgorithm.RS384);
-            case "RS512" -> Keys.secretKeyFor(SignatureAlgorithm.RS512);
-            case "ES256" -> Keys.secretKeyFor(SignatureAlgorithm.ES256);
-            case "ES384" -> Keys.secretKeyFor(SignatureAlgorithm.ES384);
-            case "ES512" -> Keys.secretKeyFor(SignatureAlgorithm.ES512);
-            case "PS256" -> Keys.secretKeyFor(SignatureAlgorithm.PS256);
-            case "PS384" -> Keys.secretKeyFor(SignatureAlgorithm.PS384);
-            case "PS512" -> Keys.secretKeyFor(SignatureAlgorithm.PS512);
-            default -> throw new IllegalArgumentException("Unsupported algorithm: " + algorithm);
-        };
+        switch (algorithm) {
+            case "HS256":
+                return Keys.secretKeyFor(SignatureAlgorithm.HS256);
+            case "HS384":
+                return Keys.secretKeyFor(SignatureAlgorithm.HS384);
+            case "HS512":
+                return Keys.secretKeyFor(SignatureAlgorithm.HS512);
+            case "RS256":
+                return Keys.secretKeyFor(SignatureAlgorithm.RS256);
+            case "RS384":
+                return Keys.secretKeyFor(SignatureAlgorithm.RS384);
+            case "RS512":
+                return Keys.secretKeyFor(SignatureAlgorithm.RS512);
+            case "ES256":
+                return Keys.secretKeyFor(SignatureAlgorithm.ES256);
+            case "ES384":
+                return Keys.secretKeyFor(SignatureAlgorithm.ES384);
+            case "ES512":
+                return Keys.secretKeyFor(SignatureAlgorithm.ES512);
+            case "PS256":
+                return Keys.secretKeyFor(SignatureAlgorithm.PS256);
+            case "PS384":
+                return Keys.secretKeyFor(SignatureAlgorithm.PS384);
+            case "PS512":
+                return Keys.secretKeyFor(SignatureAlgorithm.PS512);
+            default:
+                throw new IllegalArgumentException("Unsupported algorithm: " + algorithm);
+        }
     }
 
-    public static void decodeJWT(String jws, String key) {
+    public static Pair<String, String> decodeJWT(String jws, String key) {
         Jws<Claims> claims = Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jws);
-        System.out.println("Header: " + claims.getHeader());
-        System.out.println("Payload: " + claims.getBody());
-        System.out.println("Signature: " + claims.getSignature());
+        String header = claims.getHeader().toString();
+        String payload = claims.getBody().toString();
+        return new Pair<>(header, payload);
     }
 
     public static void main(String[] args) {
         String userInput = "{\"name\": \"Joe\", \"picture\": \"https://example.com/image.png\"}";
 
         Pair<String, String> jwtAndKey = createJWT("JWT", "HS512", userInput,
-                "rrajesh1979", "JWT Encoder", "Hello JWT", 0, 1000000000);
+                "rrajesh1979", "JWT Encoder", "Hello JWT", false, 0);
 
         System.out.println("JWT :" + jwtAndKey.getValue0());
         System.out.println("Secret Key :" + jwtAndKey.getValue1());
 
-        decodeJWT(jwtAndKey.getValue0(), jwtAndKey.getValue1());
+        Pair<String, String> decodedJwtAndKey = decodeJWT(jwtAndKey.getValue0(), jwtAndKey.getValue1());
+        System.out.println("Decoded JWT Header:" + decodedJwtAndKey.getValue0());
+        System.out.println("Decoded JWT Key :" + decodedJwtAndKey.getValue1());
     }
 
 }

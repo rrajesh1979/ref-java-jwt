@@ -1,10 +1,8 @@
 package org.rrajesh1979.tool;
 
-import java.security.Key;
+import org.javatuples.Pair;
+import org.rrajesh1979.utils.JWTUtil;
 
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
-import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine;
 
@@ -14,21 +12,14 @@ public class JWTCEncode implements Runnable {
     @Override
     public void run() {
         log.info("Hello from JWTCEncode");
-        // We need a signing key, so we'll create one just for this example. Usually
-        // the key would be read from your application configuration instead.
-        Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
 
-        String jws = Jwts.builder()
-                // .setSubject("Joe")
-                .setPayload("{\"name\": \"Joe\", \"picture\": \"https://example.com/image.png\"}")
-                .signWith(key)
-                .compact();
+        String userInput = "{\"name\": \"Joe\", \"picture\": \"https://example.com/image.png\"}";
 
-        System.out.println(jws);
+        Pair<String, String> jwtAndKey = JWTUtil.createJWT("JWT", "HS512", userInput,
+                "rrajesh1979", "JWT Encoder", "Hello JWT", false, 1000000000);
 
-        assert Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jws).getBody().getSubject().equals("Joe");
-
-        System.out.println(Jwts.parserBuilder().setSigningKey(key).build().parseClaimsJws(jws));
+        System.out.println("JWT :" + jwtAndKey.getValue0());
+        System.out.println("Secret Key :" + jwtAndKey.getValue1());
 
     }
 }
