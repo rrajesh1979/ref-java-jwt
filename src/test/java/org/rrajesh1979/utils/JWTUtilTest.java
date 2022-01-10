@@ -35,6 +35,9 @@ class JWTUtilTest {
         String jwt = jwtAndKey.getValue0();
         String key = jwtAndKey.getValue1();
 
+        System.out.println(jwt);
+        System.out.println(key);
+
         Pair<String, String> decodedJwtAndKey = JWTUtil.decodeJWT(jwt, key);
         assertEquals(decodedJwtAndKey.getValue0(), "{typ=JWT, alg=HS512}");
         assertEquals(decodedJwtAndKey.getValue1(), "{sub=JWT Encoder, aud=Hello JWT, name=Joe, iss=rrajesh1979, picture=https://example.com/image.png}");
@@ -76,16 +79,15 @@ class JWTUtilTest {
     @Test
     @DisplayName("Test JWT decode with invalid key")
     void encodeDecodeJWTInvalidKeyTest() {
-        String userInput = "{}";
+        String jwt = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QgRW5jb2RlciIsImF1ZCI6IkhlbGxvIEpXVCIsIm5hbWUiOiJKb2UiLCJpc3MiOiJycmFqZXNoMTk3OSIsInBpY3R1cmUiOiJodHRwczovL2V4YW1wbGUuY29tL2ltYWdlLnBuZyJ9.W5xD5SD6VokmsLSg9wvSyPDEoceY_qrDCvkre3WK3nZgxn4do_jTQNI3WYfrnevoKC4VeUc-b-qN1_KWX9driQ";
+        String key = "mS1U8Cvm3VHcS3TwXlnZm5yA6bksHWeNHI4lS4KSKMkOaqW0NNJoghyXwemTkErKCxv26hdqGz9BC1fPm3eCeg==";
 
-        Pair<String, String> jwtAndKey = JWTUtil.createJWT("JWT", "HS512", userInput,
-                "rrajesh1979", "JWT Encoder", "Hello JWT", true, 0);
-
-        String jwt = jwtAndKey.getValue0();
-        String key = jwtAndKey.getValue1();
+        String payload = "{\"sub\": \"JWT Encoder\", \"aud\": \"Hello JWT\", \"name\": \"Joe\", \"iss\": \"rrajesh1979\", \"picture\": \"https://example.com/image.png\"}";
 
         Pair<String, String> decodedJwtAndKey = JWTUtil.decodeJWT(jwt, key);
         assertEquals(decodedJwtAndKey.getValue0(), "{typ=JWT, alg=HS512}");
-        assertNotEquals(decodedJwtAndKey.getValue1(), "{sub=JWT Encoder, aud=Hello JWT, iss=rrajesh1979}");
+        assertEquals(decodedJwtAndKey.getValue1(), payload.replace("\"", "").replace(": ", "="));
     }
+
+
 }
