@@ -16,15 +16,12 @@
 
 package org.rrajesh1979.tool;
 
-import io.jsonwebtoken.io.Encoders;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.rrajesh1979.utils.JWTUtil;
-import picocli.CommandLine;
 
-import java.security.Key;
-import java.util.Base64;
+import picocli.CommandLine;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -33,14 +30,13 @@ class JWTCTest {
     @Test
     @DisplayName("Test JWTC Main - encode")
     void mainEncodeTest() {
-        String[] args = {"encode"};
+        String[] args = { "encode" };
         CommandLine jwtcCommandLine = new CommandLine(new JWTC());
         int exitCode = jwtcCommandLine
                 .setColorScheme(JWTC.getColorScheme())
                 .execute(args);
         assertEquals(0, exitCode);
     }
-
 
     @Test
     @DisplayName("Test JWTC Main - decode")
@@ -56,7 +52,7 @@ class JWTCTest {
         String[] args = {
                 "decode",
                 "-j=" + jwt + " ",
-                "-k=\""+ key + "\""
+                "-k=\"" + key + "\""
         };
         System.out.println(String.join(" ", args));
         CommandLine jwtcCommandLine = new CommandLine(new JWTC());

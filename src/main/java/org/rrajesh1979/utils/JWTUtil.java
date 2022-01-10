@@ -22,8 +22,6 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.TreeMap;
 
-import com.sun.source.tree.Tree;
-import lombok.extern.slf4j.Slf4j;
 import org.javatuples.Pair;
 import org.json.JSONObject;
 
@@ -31,6 +29,7 @@ import io.jsonwebtoken.*;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
 public class JWTUtil {

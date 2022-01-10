@@ -16,10 +16,11 @@
 
 package org.rrajesh1979.utils;
 
-import lombok.extern.slf4j.Slf4j;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+
+import lombok.extern.slf4j.Slf4j;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -58,7 +59,6 @@ class JWTUtilTest {
         assertNotEquals("{sub=JWT Encoder, aud=Hello JWT, name=Joe, iss=rrajesh1979, picture=https://example.com/image.png}", decodedJwtAndKey.getValue1());
     }
 
-
     @Test
     @DisplayName("Test JWT decode with valid key")
     void encodeDecodeJWTEmptyPayloadTest() {
@@ -87,6 +87,5 @@ class JWTUtilTest {
         assertEquals("{typ=JWT, alg=HS512}", decodedJwtAndKey.getValue0());
         assertEquals(payload.replace("\"", "").replace(": ", "="), decodedJwtAndKey.getValue1());
     }
-
 
 }
