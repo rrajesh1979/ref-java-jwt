@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-@Command(name = "decode")
+@Command(name = "decode", description = "Decode JWT token")
 @Slf4j
 public class JWTCDecode implements Runnable {
     @Option(names = { "-j", "--jwt" }, description = "JWT String to be decoded.", required = true)

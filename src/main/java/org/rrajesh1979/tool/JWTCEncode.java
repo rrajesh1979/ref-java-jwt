@@ -23,7 +23,7 @@ import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-@Command(name = "encode")
+@Command(name = "encode", description = "Encodes a JWT token")
 @Slf4j
 public class JWTCEncode implements Runnable {
     @Option(names = { "-a",
