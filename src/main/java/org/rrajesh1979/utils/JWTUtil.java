@@ -108,18 +108,4 @@ public class JWTUtil {
         return new Pair<>(header, payload);
     }
 
-    public static void main(String[] args) {
-        String userInput = "{\"name\": \"Joe\", \"picture\": \"https://example.com/image.png\"}";
-
-        Pair<String, String> jwtAndKey = createJWT("JWT", "HS512", userInput,
-                "rrajesh1979", "JWT Encoder", "Hello JWT", false, 0);
-
-        log.info("JWT :{}", jwtAndKey.getValue0());
-        log.info("Secret Key :{}", jwtAndKey.getValue1());
-
-        Pair<String, String> decodedJwtAndKey = decodeJWT(jwtAndKey.getValue0(), jwtAndKey.getValue1());
-        log.info("Decoded JWT Header :{}", decodedJwtAndKey.getValue0());
-        log.info("Decoded JWT Key :{}", decodedJwtAndKey.getValue1());
-    }
-
 }
