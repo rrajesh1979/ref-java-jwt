@@ -20,7 +20,9 @@ import java.security.Key;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
+import java.util.TreeMap;
 
+import com.sun.source.tree.Tree;
 import lombok.extern.slf4j.Slf4j;
 import org.javatuples.Pair;
 import org.json.JSONObject;
@@ -54,9 +56,10 @@ public class JWTUtil {
                                                  String iss, String sub, String aud, boolean iat, long exp) {
 
         /* Construct JWT Header */
-        Map<String, Object> header = new HashMap<>();
-        header.put("typ", Objects.requireNonNullElse(typ, "JWT"));
+        Map<String, Object> header = new TreeMap<>();
         header.put("alg", Objects.requireNonNullElse(alg, "HS256"));
+        header.put("typ", Objects.requireNonNullElse(typ, "JWT"));
+        log.debug(header.toString());
 
         /* Construct JWT Payload */
         JSONObject payload = new JSONObject(userInput);
