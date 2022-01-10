@@ -23,7 +23,7 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>org.rrajesh1979.tool</groupId>
-    <artifactId>ref-java-jwt</artifactId>
+    <artifactId>jwtc</artifactId>
     <version>0.0.2</version>
 
     <description>ref-java-jwt -- JWT CLI utility</description>
