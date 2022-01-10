@@ -61,4 +61,32 @@ class JWTCTest {
                 .execute(args);
         assertEquals(0, exitCode);
     }
+
+    @Test
+    @DisplayName("Test JWTC Main")
+    void mainTest() {
+        String[] args = {};
+        System.out.println(String.join(" ", args));
+        CommandLine jwtcCommandLine = new CommandLine(new JWTC());
+        int exitCode = jwtcCommandLine
+                .setColorScheme(JWTC.getColorScheme())
+                .execute(args);
+        assertEquals(0, exitCode);
+    }
+
+    @Test
+    @DisplayName("Test JWTC Main - Invalid Command")
+    void mainInvalidTest() {
+        String userInput = "{}";
+
+        String[] args = {
+                "invalid"
+        };
+        System.out.println(String.join(" ", args));
+        CommandLine jwtcCommandLine = new CommandLine(new JWTC());
+        int exitCode = jwtcCommandLine
+                .setColorScheme(JWTC.getColorScheme())
+                .execute(args);
+        assertNotEquals(0, exitCode);
+    }
 }
