@@ -94,7 +94,7 @@ public class JWTUtil {
         return new Pair<>(jws, Encoders.BASE64.encode(key.getEncoded()));
     }
 
-    private static Key signingKey(String algorithm) {
+    public static Key signingKey(String algorithm) {
         SignatureAlgorithm signatureAlgorithm = (SignatureAlgorithm) algMap.get(algorithm);
         return Keys.secretKeyFor(signatureAlgorithm);
     }
