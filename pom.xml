@@ -24,7 +24,7 @@
 
     <groupId>org.rrajesh1979.tool</groupId>
     <artifactId>ref-java-jwt</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.2</version>
 
     <description>ref-java-jwt -- JWT CLI utility</description>
     <inceptionYear>2022</inceptionYear>
