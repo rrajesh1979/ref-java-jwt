@@ -67,9 +67,31 @@ brew tap rrajesh1979/tap
 brew install jwtc
 ```
 
+To upgrade version
+```shell
+brew update
+brew upgrade jwtc
+==> Upgrading 1 outdated package:
+rrajesh1979/tap/jwtc 0.0.3 -> 0.0.4
+==> Downloading https://github.com/rrajesh1979/ref-java-jwt/releases/download/v0.0.4/jwtc-0.0.4-osx-x86_64.zip
+==> Downloading from https://objects.githubusercontent.com/github-production-release-asset-2e65be/445972514/8ad8375b-3107-490d-a826-3ad6e913632a?X-Amz-Algorithm=AWS4-HMAC-SHA256&X-Amz-Credential=AKIAIWNJYAX4
+######################################################################## 100.0%
+==> Upgrading rrajesh1979/tap/jwtc
+  0.0.3 -> 0.0.4
+
+🍺  /usr/local/Cellar/jwtc/0.0.4: 5 files, 32.4MB, built in 3 seconds
+==> Running `brew cleanup jwtc`...
+Removing: /usr/local/Cellar/jwtc/0.0.3... (5 files, 32.2MB)
+Removing: /Users/rajesh/Library/Caches/Homebrew/jwtc--0.0.3.zip... (10.4MB)
+```
+
 For command auto completion, you can use the following command.
 ```shell
 source jwtc_completion
+jwtc[TAB][TAB]
+#Auto completion displays available sub-commands
+jwtc
+decode  encode  help
 ````
 
 Once installed you can invoke jwtc with the file name and algorithm as shown below.
