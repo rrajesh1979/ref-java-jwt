@@ -54,8 +54,8 @@ class JWTUtilTest {
         String key = jwtAndKey.getValue1();
 
         Pair<String, String> decodedJwtAndKey = JWTUtil.decodeJWT(jwt, key);
-        assertEquals(decodedJwtAndKey.getValue0(), "{typ=JWT, alg=HS512}");
-        assertNotEquals(decodedJwtAndKey.getValue1(), "{sub=JWT Encoder, aud=Hello JWT, name=Joe, iss=rrajesh1979, picture=https://example.com/image.png}");
+        assertEquals("{alg=HS512, typ=JWT}", decodedJwtAndKey.getValue0());
+        assertNotEquals("{sub=JWT Encoder, aud=Hello JWT, name=Joe, iss=rrajesh1979, picture=https://example.com/image.png}", decodedJwtAndKey.getValue1());
     }
 
 
@@ -71,8 +71,8 @@ class JWTUtilTest {
         String key = jwtAndKey.getValue1();
 
         Pair<String, String> decodedJwtAndKey = JWTUtil.decodeJWT(jwt, key);
-        assertEquals(decodedJwtAndKey.getValue0(), "{typ=JWT, alg=HS512}");
-        assertEquals(decodedJwtAndKey.getValue1(), "{sub=JWT Encoder, aud=Hello JWT, iss=rrajesh1979}");
+        assertEquals("{alg=HS512, typ=JWT}", decodedJwtAndKey.getValue0());
+        assertEquals("{sub=JWT Encoder, aud=Hello JWT, iss=rrajesh1979}", decodedJwtAndKey.getValue1());
     }
 
     @Test
@@ -84,8 +84,8 @@ class JWTUtilTest {
         String payload = "{\"sub\": \"JWT Encoder\", \"aud\": \"Hello JWT\", \"name\": \"Joe\", \"iss\": \"rrajesh1979\", \"picture\": \"https://example.com/image.png\"}";
 
         Pair<String, String> decodedJwtAndKey = JWTUtil.decodeJWT(jwt, key);
-        assertEquals(decodedJwtAndKey.getValue0(), "{typ=JWT, alg=HS512}");
-        assertEquals(decodedJwtAndKey.getValue1(), payload.replace("\"", "").replace(": ", "="));
+        assertEquals("{typ=JWT, alg=HS512}", decodedJwtAndKey.getValue0());
+        assertEquals(payload.replace("\"", "").replace(": ", "="), decodedJwtAndKey.getValue1());
     }
 
 
