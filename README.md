@@ -10,6 +10,7 @@
 <div align="center">
 
 # JWT CLI
+Command line tool for creating and verifying JWT tokens. Created with Java, GraalVM native image, Picocli and JReleaser.
 
 [![Release](https://github.com/rrajesh1979/ref-java-jwt/actions/workflows/release.yml/badge.svg)](https://github.com/rrajesh1979/ref-java-jwt/actions/workflows/release.yml)
 [![Code quality checks](https://github.com/rrajesh1979/ref-java-jwt/actions/workflows/code-quality-checks.yml/badge.svg?branch=master)](https://github.com/rrajesh1979/ref-java-jwt/actions/workflows/code-quality-checks.yml) 
