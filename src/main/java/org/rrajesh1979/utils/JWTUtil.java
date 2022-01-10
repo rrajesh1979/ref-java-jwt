@@ -54,7 +54,6 @@ public class JWTUtil {
 
     public static Pair<String, String> createJWT(String typ, String alg, String userInput,
                                                  String iss, String sub, String aud, boolean iat, long exp) {
-
         /* Construct JWT Header */
         Map<String, Object> header = new TreeMap<>();
         header.put("alg", Objects.requireNonNullElse(alg, "HS256"));
@@ -62,6 +61,21 @@ public class JWTUtil {
         log.debug(header.toString());
 
         /* Construct JWT Payload */
+        JSONObject payload = createPayload(userInput, iss, sub, aud, iat, exp);
+
+        Key key = signingKey(alg);
+
+        JwtBuilder jwtBuilder = Jwts.builder()
+                .setHeader(header)
+                .setPayload(payload.toString())
+                .signWith(key);
+
+        String jws = jwtBuilder.compact();
+
+        return new Pair<>(jws, Encoders.BASE64.encode(key.getEncoded()));
+    }
+
+    private static JSONObject createPayload(String userInput, String iss, String sub, String aud, boolean iat, long exp) {
         JSONObject payload = new JSONObject(userInput);
         if (iss != null) {
             payload.put("iss", iss);
@@ -78,20 +92,9 @@ public class JWTUtil {
         }
 
         if (exp != 0) {
-            // Converting milliseconds to nanoseconds
-            payload.put("exp", System.nanoTime() + exp * 1000 * 1000);
+            payload.put("exp", System.nanoTime() + exp * 1000 * 1000); // Converting milliseconds to nanoseconds
         }
-
-        Key key = signingKey(alg);
-
-        JwtBuilder jwtBuilder = Jwts.builder()
-                .setHeader(header)
-                .setPayload(payload.toString())
-                .signWith(key);
-
-        String jws = jwtBuilder.compact();
-
-        return new Pair<>(jws, Encoders.BASE64.encode(key.getEncoded()));
+        return payload;
     }
 
     public static Key signingKey(String algorithm) {
