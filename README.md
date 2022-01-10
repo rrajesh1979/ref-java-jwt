@@ -67,6 +67,11 @@ brew tap rrajesh1979/tap
 brew install jwtc
 ```
 
+For command auto completion, you can use the following command.
+```shell
+source jwtc_completion
+````
+
 Once installed you can invoke jwtc with the file name and algorithm as shown below.
 
 Invoking the command displays the usage information as shown below. This is powered by Picocli.
@@ -78,27 +83,57 @@ Encode and decode JWT tokens.
   -V, --version   Print version information and exit.
 Commands:
   help    Displays help information about the specified command
-  encode
-  decode
+  encode  Encode a JWT token
+  decode  Decode JWT token
+```
+
+```shell
+jwtc encode help
+Unmatched argument at index 1: 'help'
+Usage: jwtc encode [-iat] [-a=<alg>] [-aud=<aud>] [-i=<iss>] [-p=<userInput>]
+                   [-s=<sub>] [-t=<ttlMillis>] [-ty=<typ>]
+  -a, --algorithm=<alg>   Algorithm to be used. Default is HS256. Supported
+                            algorithms are HS256, HS384, HS512, RS256, RS384,
+                            RS512, ES256, ES384, ES512
+      -aud, --audience=<aud>
+                          Recipients the JWT is intended for.
+  -i, --issuer=<iss>      Principal that issued the JWT.
+      -iat, --issuedAt    Include issued at in JWT.
+  -p, --userInput=<userInput>
+                          User provided payload in JSON format.
+  -s, --subject=<sub>     Subject of the JWT.
+  -t, --ttl=<ttlMillis>   Time to Live in Milliseconds.
+      -ty, --typ=<typ>    Token Type. Default is JWT.
+```
+
+```shell
+jwtc decode help
+Missing required options: '--jwt=<jwt>', '--key=<key>'
+Usage: jwtc decode -j=<jwt> -k=<key>
+  -j, --jwt=<jwt>   JWT String to be decoded.
+  -k, --key=<key>   Key to be used for decoding.
 ```
 
 Some valid commands are shown below.
 ```shell
-mychecksum hello.txt
-11:09:40.116 [main] INFO org.rrajesh1979.demo.MyCheckSum - Hello from MyCheckSum
-11:09:40.137 [main] INFO org.rrajesh1979.demo.MyCheckSum - Checksum of file hello.txt, is : f0ef7081e1539ac00ef5b761b4fb01b3
+jwtc encode
+16:17:48.928 [main] INFO org.rrajesh1979.tool.JWTCEncode - Starting JWTCEncode
+16:17:48.955 [main] INFO org.rrajesh1979.tool.JWTCEncode - JWT: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJpc3MiOiJycmFqZXNoMTk3OSIsImV4cCI6MjYwNzMxMTE4MTM1MjU5fQ.5aa6651mlTOf8NOGrrugi3pvHoSYhDah67vlTVWw1fA
+16:17:48.955 [main] INFO org.rrajesh1979.tool.JWTCEncode - Secret Key: QeQvvdxnvB9XEk0y0nnNh6w4V8BWfJ2uBwrNlnp84w0=
 ```
 
 ```shell
-mychecksum hello.txt -a MD5
-11:09:50.123 [main] INFO org.rrajesh1979.demo.MyCheckSum - Hello from MyCheckSum
-11:09:50.151 [main] INFO org.rrajesh1979.demo.MyCheckSum - Checksum of file hello.txt, is : f0ef7081e1539ac00ef5b761b4fb01b3
+jwtc decode -j="eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJKV1QgRW5jb2RlciIsImF1ZCI6IkhlbGxvIEpXVCIsIm5hbWUiOiJKb2UiLCJpc3MiOiJycmFqZXNoMTk3OSIsInBpY3R1cmUiOiJodHRwczovL2V4YW1wbGUuY29tL2ltYWdlLnBuZyJ9.l1j1JyW3nvWJ90De8taOe1tZ80sHHHDMaibYEPv78LfA3Bw-uGgCECy5MwkE6nY3hP7isup433X5VqS2xP22fw" -k="mOYKXJKdhBYQFWNr9cHHsgGvHseKRR9Rw7E379oeUuzfG18MmlcO3c8i7tBMMufziy6xMoZZAiO7bNKxZl7Rfw=="
+16:18:07.913 [main] INFO org.rrajesh1979.tool.JWTCDecode - Starting JWTCDecode
+16:18:07.921 [main] INFO org.rrajesh1979.tool.JWTCDecode - Decoded JWT Header: {typ=JWT, alg=HS512}
+16:18:07.922 [main] INFO org.rrajesh1979.tool.JWTCDecode - Decoded JWT Payload: {sub=JWT Encoder, aud=Hello JWT, name=Joe, iss=rrajesh1979, picture=https://example.com/image.png}
 ```
 
 ```shell
-mychecksum hello.txt -a SHA-256
-11:10:10.578 [main] INFO org.rrajesh1979.demo.MyCheckSum - Hello from MyCheckSum
-11:10:10.591 [main] INFO org.rrajesh1979.demo.MyCheckSum - Checksum of file hello.txt, is : 1894a19c85ba153acbf743ac4e43fc004c891604b26f8c69e1e83ea2afc7c48f
+jwtc encode -a="HS512" -aud="Hello World" -i="rrajesh1979" -iat=true -s="Subject" --ttl=36000
+16:21:10.986 [main] INFO org.rrajesh1979.tool.JWTCEncode - Starting JWTCEncode
+16:21:11.015 [main] INFO org.rrajesh1979.tool.JWTCEncode - JWT: eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJTdWJqZWN0IiwiYXVkIjoiSGVsbG8gV29ybGQiLCJpc3MiOiJycmFqZXNoMTk3OSIsImV4cCI6MjU3MzY5MjE1MDg0ODExLCJpYXQiOjI1NzMzMzIxNTA4MjM1OH0.Kcnk5qBEy0BajIFzRm6RhQxxuYvd7wXodM-OGS2QD6Sw19KHQ8tpU3KVa6Fk-JrlM9YDAiC5SvYMJmmMEeisOw
+16:21:11.015 [main] INFO org.rrajesh1979.tool.JWTCEncode - Secret Key: XF+okDOyZc4HgA/cOgwb7Vday3ihlR/8XFtD8Vo/4FTBV2XWVC+quTDEYFNu93QkOCS8bqvMUd6oCuCqHaFHDQ==
 ```
 
 ## How to use
