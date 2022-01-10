@@ -21,6 +21,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 
+import lombok.extern.slf4j.Slf4j;
 import org.javatuples.Pair;
 import org.json.JSONObject;
 
@@ -29,7 +30,26 @@ import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.io.Encoders;
 import io.jsonwebtoken.security.Keys;
 
+@Slf4j
 public class JWTUtil {
+    private static Map<String, Object> algMap;
+    static {
+        algMap = new HashMap<>();
+        algMap.put("HS256", SignatureAlgorithm.HS256);
+        algMap.put("HS384", SignatureAlgorithm.HS384);
+        algMap.put("HS512", SignatureAlgorithm.HS512);
+        algMap.put("RS256", SignatureAlgorithm.RS256);
+        algMap.put("RS384", SignatureAlgorithm.RS384);
+        algMap.put("RS512", SignatureAlgorithm.RS512);
+        algMap.put("ES256", SignatureAlgorithm.ES256);
+        algMap.put("ES384", SignatureAlgorithm.ES384);
+        algMap.put("ES512", SignatureAlgorithm.ES512);
+        algMap.put("PS256", SignatureAlgorithm.PS256);
+        algMap.put("PS384", SignatureAlgorithm.PS384);
+        algMap.put("PS512", SignatureAlgorithm.PS512);
+        algMap.put("", SignatureAlgorithm.HS256);
+    }
+
     public static Pair<String, String> createJWT(String typ, String alg, String userInput,
                                                  String iss, String sub, String aud, boolean iat, long exp) {
 
@@ -72,34 +92,8 @@ public class JWTUtil {
     }
 
     private static Key signingKey(String algorithm) {
-        switch (algorithm) {
-            case "HS256":
-                return Keys.secretKeyFor(SignatureAlgorithm.HS256);
-            case "HS384":
-                return Keys.secretKeyFor(SignatureAlgorithm.HS384);
-            case "HS512":
-                return Keys.secretKeyFor(SignatureAlgorithm.HS512);
-            case "RS256":
-                return Keys.secretKeyFor(SignatureAlgorithm.RS256);
-            case "RS384":
-                return Keys.secretKeyFor(SignatureAlgorithm.RS384);
-            case "RS512":
-                return Keys.secretKeyFor(SignatureAlgorithm.RS512);
-            case "ES256":
-                return Keys.secretKeyFor(SignatureAlgorithm.ES256);
-            case "ES384":
-                return Keys.secretKeyFor(SignatureAlgorithm.ES384);
-            case "ES512":
-                return Keys.secretKeyFor(SignatureAlgorithm.ES512);
-            case "PS256":
-                return Keys.secretKeyFor(SignatureAlgorithm.PS256);
-            case "PS384":
-                return Keys.secretKeyFor(SignatureAlgorithm.PS384);
-            case "PS512":
-                return Keys.secretKeyFor(SignatureAlgorithm.PS512);
-            default:
-                throw new IllegalArgumentException("Unsupported algorithm: " + algorithm);
-        }
+        SignatureAlgorithm signatureAlgorithm = (SignatureAlgorithm) algMap.get(algorithm);
+        return Keys.secretKeyFor(signatureAlgorithm);
     }
 
     public static Pair<String, String> decodeJWT(String jws, String key) {
@@ -115,12 +109,12 @@ public class JWTUtil {
         Pair<String, String> jwtAndKey = createJWT("JWT", "HS512", userInput,
                 "rrajesh1979", "JWT Encoder", "Hello JWT", false, 0);
 
-        System.out.println("JWT :" + jwtAndKey.getValue0());
-        System.out.println("Secret Key :" + jwtAndKey.getValue1());
+        log.info("JWT :{}", jwtAndKey.getValue0());
+        log.info("Secret Key :{}", jwtAndKey.getValue1());
 
         Pair<String, String> decodedJwtAndKey = decodeJWT(jwtAndKey.getValue0(), jwtAndKey.getValue1());
-        System.out.println("Decoded JWT Header:" + decodedJwtAndKey.getValue0());
-        System.out.println("Decoded JWT Key :" + decodedJwtAndKey.getValue1());
+        log.info("Decoded JWT Header :{}", decodedJwtAndKey.getValue0());
+        log.info("Decoded JWT Key :{}", decodedJwtAndKey.getValue1());
     }
 
 }

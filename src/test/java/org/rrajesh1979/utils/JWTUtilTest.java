@@ -16,12 +16,14 @@
 
 package org.rrajesh1979.utils;
 
+import lombok.extern.slf4j.Slf4j;
 import org.javatuples.Pair;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+@Slf4j
 class JWTUtilTest {
 
     @Test
@@ -35,12 +37,7 @@ class JWTUtilTest {
         String jwt = jwtAndKey.getValue0();
         String key = jwtAndKey.getValue1();
 
-        System.out.println(jwt);
-        System.out.println(key);
-
         Pair<String, String> decodedJwtAndKey = JWTUtil.decodeJWT(jwt, key);
-        System.out.println(decodedJwtAndKey.getValue0());
-        System.out.println(decodedJwtAndKey.getValue1());
         assertEquals(decodedJwtAndKey.getValue0(), "{typ=JWT, alg=HS512}");
         assertEquals(decodedJwtAndKey.getValue1(), "{sub=JWT Encoder, aud=Hello JWT, name=Joe, iss=rrajesh1979, picture=https://example.com/image.png}");
     }
