@@ -39,6 +39,8 @@ class JWTUtilTest {
         System.out.println(key);
 
         Pair<String, String> decodedJwtAndKey = JWTUtil.decodeJWT(jwt, key);
+        System.out.println(decodedJwtAndKey.getValue0());
+        System.out.println(decodedJwtAndKey.getValue1());
         assertEquals(decodedJwtAndKey.getValue0(), "{typ=JWT, alg=HS512}");
         assertEquals(decodedJwtAndKey.getValue1(), "{sub=JWT Encoder, aud=Hello JWT, name=Joe, iss=rrajesh1979, picture=https://example.com/image.png}");
     }
