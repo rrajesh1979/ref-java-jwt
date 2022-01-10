@@ -5,6 +5,7 @@ import java.util.concurrent.Callable;
 import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.Help;
 import picocli.CommandLine.Help.Ansi.Style;
 import picocli.CommandLine.Help.ColorScheme;
 import picocli.CommandLine.HelpCommand;
@@ -29,8 +30,8 @@ public class JWTC implements Callable<Integer> {
      *             The default algorithm is MD5.
      */
     public static void main(String[] args) {
-        log.info("Hello from JWTC main");
-        int exitCode = new CommandLine(new JWTC())
+        CommandLine jwtcCommandLine = new CommandLine(new JWTC());
+        int exitCode = jwtcCommandLine
                 .setColorScheme(JWTC.getColorScheme())
                 .execute(args);
         System.exit(exitCode);
@@ -42,13 +43,13 @@ public class JWTC implements Callable<Integer> {
      */
     @Override
     public Integer call() {
-        log.info("Hello from JWTC call");
+        CommandLine.usage(this, System.out);
         return 0;
     }
 
     public static CommandLine.Help.ColorScheme getColorScheme() {
         // see also CommandLine.Help.defaultColorScheme()
-        ColorScheme colorScheme = new ColorScheme.Builder()
+        return new ColorScheme.Builder()
                 .commands(Style.bold, Style.underline) // combine multiple styles
                 .options(Style.fg_yellow) // yellow foreground color
                 .parameters(Style.fg_yellow)
@@ -56,7 +57,6 @@ public class JWTC implements Callable<Integer> {
                 .errors(Style.fg_red, Style.bold)
                 .stackTraces(Style.italic)
                 .build();
-        return colorScheme;
     }
 
 }

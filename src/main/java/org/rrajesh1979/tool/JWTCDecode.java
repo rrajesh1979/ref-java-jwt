@@ -4,15 +4,16 @@ import org.javatuples.Pair;
 import org.rrajesh1979.utils.JWTUtil;
 
 import lombok.extern.slf4j.Slf4j;
-import picocli.CommandLine;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 
-@CommandLine.Command(name = "decode")
+@Command(name = "decode")
 @Slf4j
 public class JWTCDecode implements Runnable {
-    @CommandLine.Option(names = { "-j", "--jwt" }, description = "JWT String to be decoded.", required = true)
+    @Option(names = { "-j", "--jwt" }, description = "JWT String to be decoded.", required = true)
     String jwt;
 
-    @CommandLine.Option(names = { "-k", "--key" }, description = "Key to be used for decoding.", required = true)
+    @Option(names = { "-k", "--key" }, description = "Key to be used for decoding.", required = true)
     String key;
 
     @Override

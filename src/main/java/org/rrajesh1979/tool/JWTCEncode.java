@@ -4,10 +4,10 @@ import org.javatuples.Pair;
 import org.rrajesh1979.utils.JWTUtil;
 
 import lombok.extern.slf4j.Slf4j;
-import picocli.CommandLine;
+import picocli.CommandLine.Command;
 import picocli.CommandLine.Option;
 
-@CommandLine.Command(name = "encode")
+@Command(name = "encode")
 @Slf4j
 public class JWTCEncode implements Runnable {
     @Option(names = { "-a",
@@ -32,7 +32,7 @@ public class JWTCEncode implements Runnable {
     @Option(names = { "-iat", "--issuedAt" }, description = "Include issued at in JWT.", defaultValue = "false")
     boolean iat;
 
-    @CommandLine.Option(names = { "-p", "--userInput" }, description = "User provided payload in JSON format.", defaultValue = "{}")
+    @Option(names = { "-p", "--userInput" }, description = "User provided payload in JSON format.", defaultValue = "{}")
     String userInput;
 
     @Override
