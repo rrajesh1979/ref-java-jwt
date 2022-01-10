@@ -75,6 +75,10 @@
         <!-- Dependencies -->
         <plugin.site.version>3.9.0</plugin.site.version>
 
+        <!-- Sonar cloud properties -->
+        <sonar.organization>rrajesh1979</sonar.organization>
+        <sonar.host.url>https://sonarcloud.io</sonar.host.url>
+
     </properties>
 
     <dependencies>
