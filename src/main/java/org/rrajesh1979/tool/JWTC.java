@@ -31,7 +31,7 @@ import picocli.CommandLine.HelpCommand;
  * @since 2021-Jan-08
  */
 
-@Command(name = "jwtc", mixinStandardHelpOptions = true, version = "jwtc 0.0.1", description = "Encode and decode JWT tokens.", subcommands = {
+@Command(name = "jwtc", mixinStandardHelpOptions = true, version = "jwtc 0.0.5", description = "Encode and decode JWT tokens.", subcommands = {
         HelpCommand.class, JWTCEncode.class, JWTCDecode.class
 })
 @Slf4j

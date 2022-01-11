@@ -21,9 +21,10 @@ import org.rrajesh1979.utils.JWTUtil;
 
 import lombok.extern.slf4j.Slf4j;
 import picocli.CommandLine.Command;
+import picocli.CommandLine.HelpCommand;
 import picocli.CommandLine.Option;
 
-@Command(name = "encode", description = "Encodes a JWT token")
+@Command(name = "encode", description = "Encodes a JWT token", subcommands = HelpCommand.class)
 @Slf4j
 public class JWTCEncode implements Runnable {
     @Option(names = { "-a",
