@@ -185,7 +185,7 @@ Fork and develop online using this ready to use GitPod environment.
 [![setup automated](https://img.shields.io/badge/Gitpod-ready_to_code-orange?logo=gitpod)](https://gitpod.io/from-referrer/)
 
 ## Related projects
-
+> 🧸 kcctl – Your Cuddly CLI for Apache Kafka Connect: https://github.com/kcctl/kcctl. The work done by Gunnar Morling, Andres Almiray and team is a great source of learning for building this repo. Especially the Maven assembly and the GitHub actions workflow. 
 
 ## License
 
