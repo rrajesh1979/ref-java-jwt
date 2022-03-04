@@ -65,7 +65,7 @@
         <lombok.version>1.18.22</lombok.version>
 
         <!-- CLI -->
-        <picocli.version>4.6.2</picocli.version>
+        <picocli.version>4.6.3</picocli.version>
 
         <!-- Code Quality -->
         <jacoco.it.execution.data.file>${project.build.directory}/coverage-reports/jacoco-it.exec</jacoco.it.execution.data.file>
