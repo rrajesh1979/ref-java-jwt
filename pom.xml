@@ -61,7 +61,7 @@
 
         <!-- Tooling -->
         <junit.version>5.8.2</junit.version>
-        <logback-classic.version>1.2.10</logback-classic.version>
+        <logback-classic.version>1.2.11</logback-classic.version>
         <lombok.version>1.18.22</lombok.version>
 
         <!-- CLI -->
