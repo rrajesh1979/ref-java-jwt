@@ -121,10 +121,10 @@ jobs:
         uses: ilammy/msvc-dev-cmd@v1
 
       - name: Setup GraalVM environment
-        uses: DeLaGuardo/setup-graalvm@5.0
+        uses: graalvm/setup-graalvm@v1
         with:
-          graalvm: '21.3.0'
-          java: 'java17'
+          distribution: 'graalvm'
+          java-version: '17.0.7'
 
       - name: 'Install native-image component'
         run: |
