@@ -213,7 +213,7 @@ jobs:
 #          JRELEASER_SDKMAN_CONSUMER_KEY: ${{ secrets.JRELEASER_SDKMAN_CONSUMER_KEY }}
 #          JRELEASER_SDKMAN_CONSUMER_TOKEN: ${{ secrets.JRELEASER_SDKMAN_CONSUMER_TOKEN }}
  #       run: ./mvnw -e -B --file pom.xml -Prelease -DartifactsDir=artifacts jreleaser:full-release
-          run: ls -a
+        run: ls -a
 
       - name: JReleaser output
         if: always()
